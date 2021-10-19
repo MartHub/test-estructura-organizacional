@@ -44,6 +44,23 @@ function App() {
   
   const colors = ['#575757', '#0063ae', '#4b9598', '#4fd5c7', '#4fb9d5', '#a2d9e8']
 
+
+  const handleSelect = (e, color) => {
+    const value = e.target.parentElement.parentElement.parentElement.firstChild;
+    e.stopPropagation();
+    setShowList(true);
+    setIndex(index + 1);
+    setValueHistory([...valueHistory, {item: value.data, color: color}])
+  }
+
+  useEffect(() => {
+    if(valueHistory.length > 0){
+      const index = valueHistory.length - 1;
+      setCurrentColor(valueHistory[index].color);
+      setCurrentText(valueHistory[index].item);
+    }
+  }, [valueHistory])
+
   return (
     <Container>
       <Header>
@@ -52,7 +69,30 @@ function App() {
       </Header>
       
       <Breadcum breadList={valueHistory} topic={topics}/>
-
+      <ContentContainer>
+        <Select
+          color={currentColor}
+          del={false}
+          add={true}
+          showItems={true}
+          toolText={index - 1 >= 0 ? topics[index - 1] : 'Organización'}
+          handler={handleSelect}
+          index={index - 1 >= 0 ? index - 1 : 0}
+          animationFlag = {showList}
+        >
+          {currentText}
+        </Select>
+        {showList ? 
+          <ItemList 
+            list={lists[index]}
+            color={colors[index]}
+            handler={handleSelect}
+            index={index}
+            toolText={topics[index]}
+          />
+          : null
+        }
+      </ContentContainer>
     </Container>
   );
 }
