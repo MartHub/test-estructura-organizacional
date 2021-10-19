@@ -50,6 +50,9 @@ function App() {
         <ArrowBackIosIcon />
         <h2>ESTRUCTURA ORGANIZACIONAL</h2>
       </Header>
+      
+      <Breadcum breadList={valueHistory} topic={topics}/>
+
     </Container>
   );
 }
